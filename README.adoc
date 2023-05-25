@@ -1,7 +1,20 @@
 = Install
 
+== Kyria
+
 * QMK clonen: `git clone git@github.com:qmk/qmk_firmware.git`
 * QMK installieren: `pip install qmk`
 * QMK einrichten: `qmk setup`
 * Link einrichten: `ln -s ~/qmk_kyria/keyboards/splitkb/kyria/keymaps/michix ~/qmk_firmware/keyboards/splitkb/kyria/keymaps/michix`
 * Firmware bauen und flashen: `make splitkb/kyria/rev1:michix:dfu-split-left`
+
+== Handwired Skeletyl
+
+* See https://github.com/dbdrwdn/vial-qmk/tree/skeletyl_handwire/keyboards/skeletyl_handwire[]
+* QMK clonen: `git clone git@github.com:qmk/qmk_firmware.git`
+* QMK installieren: `pip install qmk`
+* QMK einrichten: `qmk setup`
+* Links einrichten: 
+** `ln -s ~/qmk_kyria/keyboards/bastardkb/skeletyl/keymaps/michix ~/qmk_firmware/keyboards/bastardkb/skeletyl/keymaps/michix`
+** `ln -s ~/qmk_kyria/keyboards/bastardkb/skeletyl/handwired ~/qmk_firmware/keyboards/bastardkb/skeletyl/handwired`
+* Firmware bauen und flashen: `make bastardkb/skeletyl/handwired:michix:avrdude`
