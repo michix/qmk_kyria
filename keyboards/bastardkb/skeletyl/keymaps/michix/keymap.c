@@ -235,12 +235,12 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
       break;
     case CB_LWIN_L:
       if (pressed) {
-        tap_code16(KC_LEFT_GUI);
+        tap_code16(KC_APPLICATION);
       }
       break;
     case CB_LWIN_R:
       if (pressed) {
-        tap_code16(KC_LEFT_GUI);
+        tap_code16(KC_APPLICATION);
       }
       break;
   }
@@ -315,7 +315,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       HOME_A, HOME_S, HOME_D, HOME_F, KC_G,       KC_H, HOME_J, HOME_K, HOME_L, HOME_SCLN,
       KC_Z, KC_X, KC_C, HOME_V, KC_B,             KC_N, HOME_M, KC_COMM, KC_DOT, KC_SLSH,
 
-      KC_NO, KC_NO, LT(_LAYER2, KC_SPACE), LT(_LAYER4, KC_SPACE), KC_NO,
+      KC_NO, KC_NO, LT(_LAYER4, KC_SPACE), LT(_LAYER2, KC_SPACE), KC_NO,
       KC_NO, LT(_LAYER1, KC_BACKSPACE), LT(_LAYER3, KC_BACKSPACE), KC_NO, KC_NO
     ),
 /*
