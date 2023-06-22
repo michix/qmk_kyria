@@ -353,10 +353,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                        `----------------------------------'  `----------------------------------'
  */
     [_LAYER2] = LAYOUT_ortho_4x10(
-      KC_1, KC_2,  KC_3, KC_4,  KC_5,                                                   KC_6, KC_7, KC_8, KC_9,  KC_0,
-      HOME2_A, HOME2_S, HOME2_D, HOME2_F, KC_EQUAL,                                     KC_MINS, HOME2_J, HOME2_K,  HOME2_L, HOME2_SCLN,
-      KC_LCBR, LSFT(KC_COMM), LSFT(KC_DOT), KC_RCBR, KC_PIPE,                           KC_DOT, KC_1,  KC_2, KC_3, KC_SLSH,
-                          KC_NO, KC_NO, _______, _______, _______,  _______,  KC_ENT, KC_0, KC_NO, KC_NO
+      KC_1, KC_2,  KC_3, KC_4,  KC_5,                          KC_6, KC_7, KC_8, KC_9,  KC_0,
+      HOME2_A, HOME2_S, HOME2_D, HOME2_F, KC_EQUAL,            KC_MINS, HOME2_J, HOME2_K,  HOME2_L, HOME2_SCLN,
+      KC_LCBR, LSFT(KC_COMM), LSFT(KC_DOT), KC_RCBR, KC_PIPE,  KC_DOT, KC_1,  KC_2, KC_3, KC_SLSH,
+                          KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,   KC_ENT, KC_0, KC_NO, KC_NO, KC_NO
     ),
 /*
  * Layer3: Function Keys
