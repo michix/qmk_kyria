@@ -18,45 +18,17 @@
 #include QMK_KEYBOARD_H
 #include "features/casemodes.h"
 
-#ifdef CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_ENABLE
-#    include "timer.h"
-#endif // CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_ENABLE
-
-// Automatically enable sniping-mode on the pointer layer.
-// #define CHARYBDIS_AUTO_SNIPING_ON_LAYER _LAYER4
-
-#ifdef CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_ENABLE
-static uint16_t auto_pointer_layer_timer = 0;
-
-#    ifndef CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_TIMEOUT_MS
-#        define CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_TIMEOUT_MS 1000
-#    endif // CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_TIMEOUT_MS
-
-#    ifndef CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_THRESHOLD
-#        define CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_THRESHOLD 8
-#    endif // CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_THRESHOLD
-#endif     // CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_ENABLE
-
-// #define ESC_MED LT(LAYER_MEDIA, KC_ESC)
-// #define SPC_NAV LT(LAYER_NAVIGATION, KC_SPC)
-// #define TAB_FUN LT(LAYER_FUNCTION, KC_TAB)
-// #define ENT_SYM LT(LAYER_SYMBOLS, KC_ENT)
-// #define BSP_NUM LT(LAYER_NUMERAL, KC_BSPC)
 #define _L_PTR(KC) LT(_LAYER4, KC)
 
-#ifndef POINTING_DEVICE_ENABLE
-#    define DRGSCRL KC_NO
-#    define DPI_MOD KC_NO
-#    define S_D_MOD KC_NO
-#    define SNIPING KC_NO
-#endif // !POINTING_DEVICE_ENABLE
+/* Use pointing device to scroll with key DRAG_SCROLL (Drag Scroll or Mouse Scroll) */
+enum custom_keycodes {
+    DRAG_SCROLL = SAFE_RANGE,
+};
+
+bool set_scrolling = false;
 
 enum layers {
     _QWERTY = 0,
-    // _DE,
-    // _COLEMAK_DH,
-    // _HANDS_DOWN,
-    // _HANDS_DOWN_NEU,
     _LAYER1,
     _LAYER2,
     _LAYER3,
@@ -293,6 +265,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (!process_case_modes(keycode, record)) {
         return false;
     }
+    if (keycode == DRAG_SCROLL && record->event.pressed) {
+        set_scrolling = !set_scrolling;
+    }
+    if (keycode == DRAG_SCROLL && !record->event.pressed) {
+        set_scrolling = !set_scrolling;
+    }
     return true;
 }
 
@@ -447,49 +425,31 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ╭──────────────────────────────────────────────────────────────╮ ╭────────────────────────────────────────────────────────────────────────╮
       QK_BOOT    , _______    , _______    , _______    , _______    , _______       , _______       , _______     , _______        , QK_BOOT ,
   // ├──────────────────────────────────────────────────────────────┤ ├────────────────────────────────────────────────────────────────────────┤
-      KC_MS_BTN5 , KC_MS_BTN4 , KC_MS_BTN2 , KC_MS_BTN1 , KC_MS_BTN3 , KC_WH_L       , KC_WH_D       , KC_WH_U     , KC_WH_R        , _______ ,
+      _______    , _______    , _______    , _______    , _______    , _______       , DRAG_SCROLL   , DRAG_SCROLL , _______        , _______ ,
   // ├──────────────────────────────────────────────────────────────┤ ├────────────────────────────────────────────────────────────────────────┤
-      KC_MUTE    , _______    , KC_VOLD    , KC_VOLU    , _______    , KC_MS_WH_LEFT , KC_MS_WH_DOWN , KC_MS_WH_UP , KC_MS_WH_RIGHT , _______ ,
+      KC_MUTE    , _______    , KC_VOLD    , KC_VOLU    , _______    , _______       , _______       , _______     , _______        , _______ ,
   // ╰──────────────────────────────────────────────────────────────┤ ├────────────────────────────────────────────────────────────────────────╯
-                                       _______, _______,               _______, KC_MS_BTN1, KC_MS_BTN2
+                                       _______, _______,               KC_MS_BTN3, KC_MS_BTN1, KC_MS_BTN2
                //                     ╰─────────────────────────────╯ ╰───────────────────────────╯
     ),
 
 };
 
 #ifdef POINTING_DEVICE_ENABLE
-#    ifdef CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_ENABLE
+void pointing_device_init_user(void) {
+    set_auto_mouse_layer(_LAYER4); // only required if AUTO_MOUSE_DEFAULT_LAYER is not set to index of <mouse_layer>
+    set_auto_mouse_enable(true);         // always required before the auto mouse feature will work
+}
+
 report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
-    if (abs(mouse_report.x) > CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_THRESHOLD || abs(mouse_report.y) > CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_THRESHOLD) {
-        if (auto_pointer_layer_timer == 0) {
-            layer_on(_LAYER4);
-#        ifdef RGB_MATRIX_ENABLE
-            rgb_matrix_mode_noeeprom(RGB_MATRIX_NONE);
-            rgb_matrix_sethsv_noeeprom(HSV_GREEN);
-#        endif // RGB_MATRIX_ENABLE
-        }
-        auto_pointer_layer_timer = timer_read();
+    if (set_scrolling) {
+        mouse_report.h = mouse_report.x;
+        mouse_report.v = mouse_report.y;
+        mouse_report.x = 0;
+        mouse_report.y = 0;
     }
     return mouse_report;
 }
-
-void matrix_scan_user(void) {
-    if (auto_pointer_layer_timer != 0 && TIMER_DIFF_16(timer_read(), auto_pointer_layer_timer) >= CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_TIMEOUT_MS) {
-        auto_pointer_layer_timer = 0;
-        layer_off(_LAYER4);
-#        ifdef RGB_MATRIX_ENABLE
-        rgb_matrix_mode_noeeprom(RGB_MATRIX_DEFAULT_MODE);
-#        endif // RGB_MATRIX_ENABLE
-    }
-}
-#    endif // CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_ENABLE
-
-#    ifdef CHARYBDIS_AUTO_SNIPING_ON_LAYER
-layer_state_t layer_state_set_user(layer_state_t state) {
-    charybdis_set_pointer_sniping_enabled(layer_state_cmp(state, CHARYBDIS_AUTO_SNIPING_ON_LAYER));
-    return state;
-}
-#    endif // CHARYBDIS_AUTO_SNIPING_ON_LAYER
 #endif     // POINTING_DEVICE_ENABLE
 
 #ifdef RGB_MATRIX_ENABLE

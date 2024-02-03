@@ -17,13 +17,8 @@
 #define POINTING_DEVICE_INVERT_Y
 #undef POINTING_DEVICE_INVERT_X
 
-/* Charybdisespecific features. */
-#ifdef POINTING_DEVICE_ENABLE
-// Automatically enable the pointer layer when moving the trackball.  See also:
-// - `CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_TIMEOUT_MS`
-// - `CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_THRESHOLD`
-#    define CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_ENABLE
-#endif // POINTING_DEVICE_ENABLE
+/* See https://docs.qmk.fm/#/feature_pointing_device?id=pointing-device-auto-mouse */
+#define POINTING_DEVICE_AUTO_MOUSE_ENABLE
 
 /* RGB settings. */
 #ifdef RGB_MATRIX_ENABLE
