@@ -80,7 +80,7 @@ const uint16_t PROGMEM dquot_combo[] = {KC_W, KC_E, COMBO_END};
 const uint16_t PROGMEM btick_combo[] = {KC_C, HOME_V, COMBO_END};
 const uint16_t PROGMEM excl_combo[] = {KC_COMM, KC_DOT, COMBO_END};
 const uint16_t PROGMEM pipe_combo[] = {HOME_M, KC_COMM, KC_DOT, COMBO_END};
-const uint16_t PROGMEM bslash_combo[] = {KC_DOT, KC_SLSH, COMBO_END};
+const uint16_t PROGMEM bslash_combo[] = {KC_DOT, KC_SLASH, COMBO_END};
 const uint16_t PROGMEM lshft_combo[] = {HOME_D, HOME_F, COMBO_END};
 const uint16_t PROGMEM rshft_combo[] = {HOME_J, HOME_K, COMBO_END};
 const uint16_t PROGMEM bspc_combo[] = {KC_U, KC_O, COMBO_END};
@@ -194,7 +194,7 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
       break;
     case CB_BSLASH:
       if (pressed) {
-        tap_code16(KC_BSLS);
+        tap_code16(KC_BACKSLASH);
       }
       break;
     case CB_LSHFT:
@@ -326,7 +326,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├─────────────────────────────────────────────┤ ├─────────────────────────────────────────────┤
       HOME_A , HOME_S , HOME_D , HOME_F , KC_G ,      KC_H , HOME_J , HOME_K  , HOME_L , HOME_SCLN ,
   // ├─────────────────────────────────────────────┤ ├─────────────────────────────────────────────┤
-      KC_Z   , KC_X   , KC_C   , HOME_V , KC_B ,      KC_N , HOME_M , KC_COMM , KC_DOT , _L_PTR(KC_SLSH),
+      KC_Z   , KC_X   , KC_C   , HOME_V , KC_B ,      KC_N , HOME_M , KC_COMM , KC_DOT , KC_SLSH,
   // ╰─────────────────────────────────────────────┤ ├─────────────────────────────────────────────╯
 
       LT(_LAYER2, KC_SPACE), LT(_LAYER4, KC_SPACE),   LT(_LAYER4, KC_BACKSPACE), LT(_LAYER1, KC_BACKSPACE), LT(_LAYER3, KC_BACKSPACE)
