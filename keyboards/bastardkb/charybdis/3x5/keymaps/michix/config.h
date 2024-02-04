@@ -19,6 +19,9 @@
 
 /* See https://docs.qmk.fm/#/feature_pointing_device?id=pointing-device-auto-mouse */
 #define POINTING_DEVICE_AUTO_MOUSE_ENABLE
+#ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
+#    define AUTO_MOUSE_DEFAULT_LAYER 4
+#endif
 
 /* RGB settings. */
 #ifdef RGB_MATRIX_ENABLE

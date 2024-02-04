@@ -18,12 +18,16 @@
 #include QMK_KEYBOARD_H
 #include "features/casemodes.h"
 
-#define _L_PTR(KC) LT(_LAYER4, KC)
-
 /* Use pointing device to scroll with key DRAG_SCROLL (Drag Scroll or Mouse Scroll) */
 enum custom_keycodes {
     DRAG_SCROLL = SAFE_RANGE,
 };
+
+// Modify these values to adjust the scrolling speed
+#define SCROLL_DIVISOR_H 18.0
+#define SCROLL_DIVISOR_V 18.0
+float scroll_accumulated_h = 0;
+float scroll_accumulated_v = 0;
 
 bool set_scrolling = false;
 
@@ -263,14 +267,10 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
 /*https://github.com/andrewjrae/kyria-keymap*/
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // Process case modes
-    if (!process_case_modes(keycode, record)) {
+    if (keycode == DRAG_SCROLL) {
+        set_scrolling = record->event.pressed;
+    } else if (!process_case_modes(keycode, record)) {
         return false;
-    }
-    if (keycode == DRAG_SCROLL && record->event.pressed) {
-        set_scrolling = !set_scrolling;
-    }
-    if (keycode == DRAG_SCROLL && !record->event.pressed) {
-        set_scrolling = !set_scrolling;
     }
     return true;
 }
@@ -450,18 +450,34 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 #ifdef POINTING_DEVICE_ENABLE
 void pointing_device_init_user(void) {
-    set_auto_mouse_layer(_LAYER4); // only required if AUTO_MOUSE_DEFAULT_LAYER is not set to index of <mouse_layer>
+    set_auto_mouse_layer(AUTO_MOUSE_DEFAULT_LAYER); // only required if AUTO_MOUSE_DEFAULT_LAYER is not set to index of <mouse_layer>
     set_auto_mouse_enable(true);         // always required before the auto mouse feature will work
 }
 
 report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
     if (set_scrolling) {
-        mouse_report.h = mouse_report.x;
-        mouse_report.v = (-1)*mouse_report.y;
+        scroll_accumulated_h += (float)mouse_report.x / SCROLL_DIVISOR_H;
+        scroll_accumulated_v += (float)mouse_report.y / SCROLL_DIVISOR_V;
+
+        mouse_report.h = (int8_t)scroll_accumulated_h;
+        mouse_report.v = (-1)*(float)scroll_accumulated_v;
         mouse_report.x = 0;
         mouse_report.y = 0;
+
+        // Update accumulated scroll values by subtracting the integer parts
+        scroll_accumulated_h -= (int8_t)scroll_accumulated_h;
+        scroll_accumulated_v -= (int8_t)scroll_accumulated_v;
     }
     return mouse_report;
+}
+
+// Function to handle layer changes and disable drag scrolling when not in AUTO_MOUSE_DEFAULT_LAYER
+layer_state_t layer_state_set_user(layer_state_t state) {
+    // Disable set_scrolling if the current layer is not the AUTO_MOUSE_DEFAULT_LAYER
+    if (get_highest_layer(state) != AUTO_MOUSE_DEFAULT_LAYER) {
+        set_scrolling = false;
+    }
+    return state;
 }
 #endif     // POINTING_DEVICE_ENABLE
 
