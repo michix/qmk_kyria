@@ -267,11 +267,14 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
 /*https://github.com/andrewjrae/kyria-keymap*/
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // Process case modes
-    if (keycode == DRAG_SCROLL) {
-        set_scrolling = record->event.pressed;
-    } else if (!process_case_modes(keycode, record)) {
+    if (!process_case_modes(keycode, record)) {
         return false;
     }
+
+    if (keycode == DRAG_SCROLL) {
+        set_scrolling = !set_scrolling;
+    }
+
     return true;
 }
 
