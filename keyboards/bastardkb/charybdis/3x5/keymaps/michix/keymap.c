@@ -24,8 +24,8 @@ enum custom_keycodes {
 };
 
 // Modify these values to adjust the scrolling speed
-#define SCROLL_DIVISOR_H 18.0
-#define SCROLL_DIVISOR_V 18.0
+#define SCROLL_DIVISOR_H 15.0
+#define SCROLL_DIVISOR_V 15.0
 float scroll_accumulated_h = 0;
 float scroll_accumulated_v = 0;
 
