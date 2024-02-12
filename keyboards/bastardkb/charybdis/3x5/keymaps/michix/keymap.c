@@ -482,6 +482,18 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     }
     return state;
 }
+
+
+// in <keyboard>.c:
+bool is_mouse_record_kb(uint16_t keycode, keyrecord_t* record) {
+    switch(keycode) {
+        case DRAG_SCROLL:
+            return true;
+        default:
+            return false;
+    }
+    return  is_mouse_record_user(keycode, record);
+}
 #endif     // POINTING_DEVICE_ENABLE
 
 #ifdef RGB_MATRIX_ENABLE
