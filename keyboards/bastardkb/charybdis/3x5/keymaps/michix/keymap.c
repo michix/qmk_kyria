@@ -67,6 +67,7 @@ enum combo_events {
   CB_LWIN_R,
   CB_OSS_L,
   CB_OSS_R,
+  CB_QUIT_POINTER,
   COMBO_LENGTH
 };
 uint16_t COMBO_LEN = COMBO_LENGTH; // remove the COMBO_COUNT define and use this instead!
@@ -96,6 +97,7 @@ const uint16_t PROGMEM oss_combo_l[] = {HOME_S, HOME_D, COMBO_END};
 const uint16_t PROGMEM oss_combo_r[] = {HOME_K, HOME_L, COMBO_END};
 const uint16_t PROGMEM lwin_combo_l[] = {HOME_A, HOME_S, HOME_D, HOME_F, COMBO_END};
 const uint16_t PROGMEM lwin_combo_r[] = {HOME_J, HOME_K, HOME_L, HOME_SCLN, COMBO_END};
+const uint16_t PROGMEM quit_polinter_combo[] = {HOME_A, HOME_S, COMBO_END};
 
 combo_t key_combos[] = {
   [CB_COPY] = COMBO_ACTION(copy_combo),
@@ -123,6 +125,7 @@ combo_t key_combos[] = {
   [CB_OSS_R] = COMBO_ACTION(oss_combo_r),
   [CB_LWIN_L] = COMBO_ACTION(lwin_combo_l),
   [CB_LWIN_R] = COMBO_ACTION(lwin_combo_r),
+  [CB_QUIT_POINTER] = COMBO_ACTION(quit_polinter_combo),
 };
 
 void process_combo_event(uint16_t combo_index, bool pressed) {
@@ -250,6 +253,11 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
     case CB_LWIN_R:
       if (pressed) {
         tap_code16(KC_APPLICATION);
+      }
+      break;
+    case CB_QUIT_POINTER:
+      if (pressed) {
+        layer_move(_QWERTY);
       }
       break;
   }
