@@ -16,7 +16,6 @@
  */
 
 #include QMK_KEYBOARD_H
-#include "features/casemodes.h"
 
 /* Use pointing device to scroll with key DRAG_SCROLL (Drag Scroll or Mouse Scroll) */
 enum custom_keycodes {
@@ -157,7 +156,7 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
       break;
     case CB_CAPSLOCK:
       if (pressed) {
-        toggle_caps_word();
+        caps_word_toggle();
       }
       break;
     case CB_MINUS:
@@ -222,6 +221,7 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
       break;
     case CB_ENTER:
       if (pressed) {
+        caps_word_off();
         tap_code16(KC_ENTER);
       }
       break;
@@ -274,11 +274,6 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
 
 /*https://github.com/andrewjrae/kyria-keymap*/
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    // Process case modes
-    if (!process_case_modes(keycode, record)) {
-        return false;
-    }
-
     if (keycode == DRAG_SCROLL) {
         set_scrolling = !set_scrolling;
     }
