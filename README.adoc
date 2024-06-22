@@ -19,13 +19,50 @@
 ** `ln -s ~/qmk_kyria/keyboards/bastardkb/skeletyl/handwired ~/qmk_firmware/keyboards/bastardkb/skeletyl/handwired`
 * Firmware bauen und flashen: `make bastardkb/skeletyl/handwired:michix:avrdude`
 
-== Handwired Skeletyl
+== Charybis for Lefties
 
-* See https://github.com/dbdrwdn/vial-qmk/tree/skeletyl_handwire/keyboards/skeletyl_handwire[]
-* QMK clonen: `git clone git@github.com:qmk/qmk_firmware.git`
+* QMK clonen: `git clone git@github.com:Bastardkb/bastardkb-qmk.git`
 * QMK installieren: `pip install qmk`
 * QMK einrichten: `qmk setup`
 * Links einrichten: 
-** `ln -s ~/qmk_kyria/keyboards/bastardkb/skeletyl/keymaps/michix ~/qmk_firmware/keyboards/bastardkb/skeletyl/keymaps/michix`
-** `ln -s ~/qmk_kyria/keyboards/bastardkb/skeletyl/handwired ~/qmk_firmware/keyboards/bastardkb/skeletyl/handwired`
-* Firmware bauen und flashen: `make bastardkb/skeletyl/handwired:michix:avrdude`
+** `ln -s ~/qmk_kyria/keyboards/bastardkb/charybdis/3x5/keymaps/michix ~/git/bastardkb-qmk/keyboards/bastardkb/charybdis/3x5/keymaps/michix`
+* Anpassungen für Linkshänder vornehmen:
+
+[source,git]
+----
+diff --git a/keyboards/bastardkb/charybdis/3x5/info.json b/keyboards/bastardkb/charybdis/3x5/info.json
+index cc233f3568..7961ad79e8 100644
+--- a/keyboards/bastardkb/charybdis/3x5/info.json
++++ b/keyboards/bastardkb/charybdis/3x5/info.json
+@@ -48,12 +48,11 @@
+                 {"matrix": [6, 0], "x": 15, "y": 2},
+ 
+                 {"matrix": [3, 2], "x": 4, "y": 3},
+-                {"matrix": [3, 3], "x": 5, "y": 3},
+-                {"matrix": [3, 0], "x": 6, "y": 3},
++                {"matrix": [3, 0], "x": 5, "y": 3},
++                {"matrix": [7, 0], "x": 6, "y": 3},
+ 
+-                {"matrix": [7, 0], "x": 9, "y": 3},
+-                {"matrix": [7, 2], "x": 10, "y": 3}
+-            ]
++                {"matrix": [7, 3], "x": 9, "y": 3},
++                {"matrix": [7, 2], "x": 10, "y": 3}]
+         }
+     }
+ }
+diff --git a/keyboards/bastardkb/charybdis/3x5/v2/splinky_3/config.h b/keyboards/bastardkb/charybdis/3x5/v2/splinky_3/config.h
+index 37f4c6a55d..8961e81391 100644
+--- a/keyboards/bastardkb/charybdis/3x5/v2/splinky_3/config.h
++++ b/keyboards/bastardkb/charybdis/3x5/v2/splinky_3/config.h
+@@ -18,7 +18,7 @@
+ #pragma once
+ 
+ /* Handedness. */
+-#define MASTER_RIGHT
++#undef MASTER_RIGHT
+ 
+ // To use the handedness pin, resistors need to be installed on the adapter PCB.
+ // If so, uncomment the following code, and undefine MASTER_RIGHT above.
+----
+* Firmware bauen und flashen: `qmk flash -c -kb bastardkb/charybdis/3x5/v2/splinky_3 -km michix`
