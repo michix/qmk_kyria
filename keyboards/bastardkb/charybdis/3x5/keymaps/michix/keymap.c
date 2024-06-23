@@ -131,26 +131,31 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
   switch(combo_index) {
     case CB_COPY:
       if (pressed) {
+        caps_word_off();
         tap_code16(LCTL(KC_C));
       }
       break;
     case CB_CUT:
       if (pressed) {
+        caps_word_off();
         tap_code16(LCTL(KC_X));
       }
       break;
     case CB_PASTE:
       if (pressed) {
+        caps_word_off();
         tap_code16(LCTL(KC_V));
       }
       break;
     case CB_TAB:
       if (pressed) {
+        caps_word_off();
         tap_code16(KC_TAB);
       }
       break;
     case CB_ESC:
       if (pressed) {
+        caps_word_off();
         tap_code16(KC_ESC);
       }
       break;
@@ -166,6 +171,7 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
       break;
     case CB_EQUALS:
       if (pressed) {
+        caps_word_off();
         tap_code16(KC_EQUAL);
       }
       break;
@@ -176,41 +182,49 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
       break;
     case CB_QUOT:
       if (pressed) {
+        caps_word_off();
         tap_code16(KC_QUOT);
       }
       break;
     case CB_DQUOT:
       if (pressed) {
+        caps_word_off();
         tap_code16(KC_DQUO);
       }
       break;
     case CB_BTICK:
       if (pressed) {
+        caps_word_off();
         tap_code16(KC_GRV);
       }
       break;
     case CB_EXCL:
       if (pressed) {
+        caps_word_off();
         tap_code16(KC_EXLM);
       }
       break;
     case CB_PIPE:
       if (pressed) {
+        caps_word_off();
         tap_code16(KC_PIPE);
       }
       break;
     case CB_BSLASH:
       if (pressed) {
+        caps_word_off();
         tap_code16(KC_BACKSLASH);
       }
       break;
     case CB_LSHFT:
       if (pressed) {
+          caps_word_off();
           set_oneshot_mods(MOD_BIT(KC_LSFT));
       }
       break;
     case CB_RSHFT:
       if (pressed) {
+          caps_word_off();
           set_oneshot_mods(MOD_BIT(KC_RSFT));
       }
       break;
@@ -232,26 +246,31 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
       break;
     case CB_FLAYER:
       if (pressed) {
+        caps_word_off();
         set_oneshot_layer(_LAYER3, ONESHOT_START);
       }
       break;
     case CB_OSS_L:
       if (pressed) {
+        caps_word_off();
         set_oneshot_mods(MOD_BIT(KC_LSFT));
       }
       break;
     case CB_OSS_R:
       if (pressed) {
+        caps_word_off();
         set_oneshot_mods(MOD_BIT(KC_RSFT));
       }
       break;
     case CB_LWIN_L:
       if (pressed) {
+        caps_word_off();
         tap_code16(KC_APPLICATION);
       }
       break;
     case CB_LWIN_R:
       if (pressed) {
+        caps_word_off();
         tap_code16(KC_APPLICATION);
       }
       break;
